@@ -71,7 +71,7 @@ app.get('/random/:count', (req, res) => {
         }
         else{
             console.log('에러'); 
-            res.status(500).json({error: `Child process exited with code ${code}`})
+            res.status(500).json({error: `Child process exited with code ${code} 에러가 왜 나와`})
         }
     })
     result.stderr.on('data', (data)=>{
