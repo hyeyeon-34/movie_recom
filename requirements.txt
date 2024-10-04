@@ -3,3 +3,4 @@ pandas
 implicit
 scikit-learn
 scipy
+langchain_community
