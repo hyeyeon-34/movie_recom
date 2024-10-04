@@ -9,7 +9,7 @@ app.use(cors())
 app.use(express.json())
 
 const isDevelopment = () => {
-    return process.env.NODE_ENV === 'development'
+    return process.env.NODE_ENV == 'development'
 }
 
 const pythonExePath = isDevelopment() ? path.join(__dirname, 'venv', 'bin', 'python3') : path.join(
