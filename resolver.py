@@ -86,6 +86,7 @@ def genres_items(genre, count):
 
 
 if __name__ == "__main__":
+  
   try:
     command = sys.argv[1]
     if command == "random":

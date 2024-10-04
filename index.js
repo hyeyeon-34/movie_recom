@@ -49,31 +49,47 @@ app.get('/', (req, res) => {
 
 
 app.get('/random/:count', (req, res) => {
-    const scriptPath = path.join(__dirname, "resolver.py")
-    const count = req.params.count
-    // C:\conda\envs\recom_env
-    const result = spawn(pythonExePath, [scriptPath, 'random', count])
-    let responseData = ""
-    result.stdout.on('data', function(data) { 
-        responseData += data.toString()
-    })
+    try {
+        const count = parseInt(req.params.count);
+        // EC2 서버에서 현재 실행 중인 Node.js 파일의 절대 경로를 기준으로 설정.
+        const scriptPath = path.join(__dirname, 'resolver.py');
     
-
-    result.on('close', (code) => {
-        if(code === 0 ){
-            const jsonResponse = JSON.parse(responseData)
-            res.status(200).json(jsonResponse)
-        }
-        else{
-            console.log('에러'); 
-            res.status(500).json({error: `Child process exited with code ${code} 에러가 왜 나와`})
-        }
-    })
-    result.stderr.on('data', (data)=>{
-        console.error(`stderr:${data}`)
-    })
-});
-
+    
+        // Spawn the Python process with the correct argument
+        const result = spawn(pythonExePath, [scriptPath, 'random', count]);
+    
+    
+        let responseData = '';
+    
+    
+        // Listen for data from the Python script
+        result.stdout.on('data', (data) => {
+          responseData += data.toString();
+        });
+    
+    
+        // Listen for errors from the Python script
+        result.stderr.on('data', (data) => {
+          console.error(`stderr: ${data}`);
+          res.status(500).json({ error: data.toString() });
+        });
+    
+    
+        // Handle the close event of the child process
+        result.on('close', (code) => {
+          if (code === 0) {
+            const jsonResponse = JSON.parse(responseData);
+            res.status(200).json(jsonResponse);
+          } else {
+            res
+              .status(500)
+              .json({ error: `Child process exited with code ${code}` });
+          }
+        });
+      } catch (error) {
+        return res.status(500).json({ error: error.message });
+      }
+})
 app.get('/latest/:count', (req, res) => {
     
     const scriptPath = path.join(__dirname, "resolver.py")
