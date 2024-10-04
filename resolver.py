@@ -37,7 +37,6 @@ def random_items(count):
 #   result_items = movies_df.sample(n=1).to_dict("records")
 #   return result_items
 
-
 def latest_items(count):
     # CSV 파일을 읽어옴
     movies_df = pd.read_csv(item_fname)[1:]

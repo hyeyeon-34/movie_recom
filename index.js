@@ -12,13 +12,9 @@ const isDevelopment = () => {
     return process.env.NODE_ENV === 'development'
 }
 
-const pythonExePath = isDevelopment() ? path.join(__dirname, 'venv', 'bin', 'python3') : path.join(
-    '/home/ubuntu/miniconda',
-    'envs',
-    'myenv',
-    'bin',
-    'python3'
-  );
+const pythonExePath = isDevelopment() 
+    ? path.join(__dirname, 'venv', 'bin', 'python3') 
+    : path.join('/home/ubuntu/miniconda', 'envs', 'myenv', 'bin', 'python3');
 
 
 //   path.join(
@@ -73,7 +69,8 @@ app.get('/random/:count', (req, res) => {
           console.error(`stderr: ${data}`);
           res.status(500).json({ error: data.toString() });
         });
-    
+
+
     
         // Handle the close event of the child process
         result.on('close', (code) => {
@@ -90,6 +87,9 @@ app.get('/random/:count', (req, res) => {
         return res.status(500).json({ error: error.message });
       }
 })
+
+
+
 app.get('/latest/:count', (req, res) => {
     
     const scriptPath = path.join(__dirname, "resolver.py")
