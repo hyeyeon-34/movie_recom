@@ -59,7 +59,6 @@ app.get('/random/:count', (req, res) => {
     // C:\conda\envs\recom_env
     const result = spawn(pythonExePath, [scriptPath, 'random', count])
     let responseData = ""
-    console.log(`Error: ${err.message}`);
     result.stdout.on('data', function(data) { 
         responseData += data.toString()
     })
