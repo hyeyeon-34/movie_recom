@@ -62,6 +62,7 @@ app.get('/random/:count', (req, res) => {
     result.stdout.on('data', function(data) { 
         responseData += data.toString()
     })
+    
 
     result.on('close', (code) => {
         if(code === 0 ){
@@ -69,7 +70,7 @@ app.get('/random/:count', (req, res) => {
             res.status(200).json(jsonResponse)
         }
         else{
-            console.error('Child process exited with code:', code); 
+            console.log('에러'); 
             res.status(500).json({error: `Child process exited with code ${code}`})
         }
     })
