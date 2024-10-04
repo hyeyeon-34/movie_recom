@@ -52,13 +52,14 @@ app.get('/', (req, res) => {
   res.send('Hi world');
 });
 
+
 app.get('/random/:count', (req, res) => {
     const scriptPath = path.join(__dirname, "resolver.py")
     const count = req.params.count
     // C:\conda\envs\recom_env
     const result = spawn(pythonExePath, [scriptPath, 'random', count])
     let responseData = ""
-
+    console.log(`Error: ${err.message}`);
     result.stdout.on('data', function(data) { 
         responseData += data.toString()
     })
@@ -69,6 +70,7 @@ app.get('/random/:count', (req, res) => {
             res.status(200).json(jsonResponse)
         }
         else{
+            console.error('Child process exited with code:', code); 
             res.status(500).json({error: `Child process exited with code ${code}`})
         }
     })
@@ -156,3 +158,37 @@ app.get('/genres/:genre/:count', (req, res) => {
     })
   });
   
+  
+
+  app.post('/user-based', (req,res)=>{
+    const scriptPath = path.join(__dirname, "recommendation.py")
+    const inputRatingDict = req.body
+    // C:\conda\envs\recom_env
+    const result = spawn(pythonExePath, [scriptPath, 'user-based'])
+    let responseData = ""
+
+
+// 파이썬 스크립트로 JSON 데이터를 전달
+    result.stdin.write(JSON.stringify(inputRatingDict));
+    result.stdin.end(); // 더 이상 데이터가 없으면 끝
+
+    result.stdout.on('data', function(data) { 
+        responseData += data.toString()
+    })
+     result.on('close', (code) => {
+        if(code === 0 ){
+            const jsonResponse = JSON.parse(responseData)
+            res.status(200).json(jsonResponse)
+        }
+        else{
+            res.status(500).json({error: `Child process exited with code ${code}`})
+        }
+    })
+    result.stderr.on('data', (data)=>{
+        console.error(`stderr:${data}`)
+    })
+  });
+  
+  
+
+ 
