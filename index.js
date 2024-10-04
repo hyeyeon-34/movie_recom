@@ -12,7 +12,7 @@ const isDevelopment = () => {
     return process.env.NODE_ENV === 'development'
 }
 
-const pythonExePath = isDevelopment ?   path.join(__dirname, 'venv', 'bin', 'python3') : path.join(
+const pythonExePath = isDevelopment() ? path.join(__dirname, 'venv', 'bin', 'python3') : path.join(
     '/home/ubuntu/miniconda',
     'envs',
     'myenv',
