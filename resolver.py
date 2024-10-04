@@ -11,10 +11,14 @@ columns = ['id', 'title', 'genres', 'imdb_id', 'tmdb_id', 'imdb_url', 'rating_co
 
 # 랜덤으로 countr개의 아이쳄을 반환
 def random_items(count):
-  movies_df=pd.read_csv(item_fname)[1:]
-  movies_df = movies_df.fillna("") # 공백을 채워준다
-  result_items = movies_df.sample(n=count).to_dict("records")
-  return result_items
+  try:
+    movies_df=pd.read_csv(item_fname)[1:]
+    movies_df = movies_df.fillna("") # 공백을 채워준다
+    result_items = movies_df.sample(n=count).to_dict("records")
+    return result_items
+  except Exception as e:
+    print(f"Error: {str(e)}", file=sys.stderr)
+    sys.exit(1)  
 
 
 

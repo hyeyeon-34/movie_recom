@@ -9,7 +9,7 @@ app.use(cors())
 app.use(express.json())
 
 const isDevelopment = () => {
-    return process.env.NODE_ENV == 'development'
+    return process.env.NODE_ENV === 'development'
 }
 
 const pythonExePath = isDevelopment() ? path.join(__dirname, 'venv', 'bin', 'python3') : path.join(
@@ -28,11 +28,6 @@ const pythonExePath = isDevelopment() ? path.join(__dirname, 'venv', 'bin', 'pyt
 //     'recon_env',
 //     'python.exe'
 //   )
-
-
-
-
-
 
 // const pythonPath = path.join(
 //     '/home/ubuntu/miniconda',
@@ -80,6 +75,7 @@ app.get('/random/:count', (req, res) => {
 });
 
 app.get('/latest/:count', (req, res) => {
+    
     const scriptPath = path.join(__dirname, "resolver.py")
     const count = req.params.count
     // C:\conda\envs\recom_env
